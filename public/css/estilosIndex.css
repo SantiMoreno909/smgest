@@ -1,0 +1,61 @@
+/* CARRUSEL */
+
+.carrusel-img {
+  height: auto;
+}
+
+.carrusel-link {
+  color: white;
+  font-size: 24px;
+  font-family: "Merriweather", serif;
+  padding: 10px;
+}
+.carrusel-link:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* CARDS */
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.card {
+  max-width: 250px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 20px;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.card-content {
+  padding: 16px;
+}
+
+.card-body {
+  padding: 15px 0;
+}
+
+.card-title {
+  color: black;
+  font-size: 20px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limita el texto a dos líneas */
+  -webkit-box-orient: vertical;
+  height: 60px;
+}
+.card-title:hover {
+  color: black;
+  text-decoration: underline;
+}

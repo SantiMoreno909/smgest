@@ -1,0 +1,55 @@
+/* REUTILIZABLES */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  background-color: #c6c7c9;
+}
+
+.alinear-derecha {
+  margin: auto 24px auto auto;
+}
+
+.section-title {
+  font-family: "Merriweather", serif;
+  font-size: 40px;
+  margin: 30px auto 30px 90px;
+}
+
+/* ESTILOS DEL NAVEGADOR */
+
+.navbar {
+  background-color: #1f1e1e;
+  /*background-color: #e2e3e3;*/
+}
+
+.navbar-brand {
+  color: white;
+  font-family: "Merriweather", serif;
+}
+
+.nav-link {
+  color: white;
+}
+
+.navbar-brand:hover,
+.nav-link:hover {
+  text-decoration: underline;
+  color: white;
+}
+
+/* FOOTER */
+
+.footer {
+  width: 100%;
+  padding: 30px;
+  background-color: #1f1e1e;
+  color: white;
+}

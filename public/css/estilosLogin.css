@@ -1,0 +1,13 @@
+form {
+  margin: 10vh 10vw;
+}
+
+.form-link {
+  font-size: 20px;
+  margin-top: 20px;
+  color: black;
+}
+.form-link:hover {
+  color: black;
+  text-decoration: underline;
+}

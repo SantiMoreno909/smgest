@@ -1,0 +1,24 @@
+<div class="card">
+  <img src="<%= producto.url_foto %>" class="card-img-top" alt="..." />
+  <div class="card-content">
+    <div class="card-body">
+      <a href="/producto/<%= producto.ProductoID %>" class="card-title"
+        ><%= producto.nombre %></a
+      >
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item text-truncate">
+        Categoria: <%= producto.Categorias.nombre %>
+      </li>
+      <li class="list-group-item text-truncate">
+        Subcategoria: <%= producto.Subcategorias.nombre %>
+      </li>
+      <li class="list-group-item text-truncate">
+        Presentación: <%= producto.presentacion %>
+      </li>
+      <li class="list-group-item text-truncate">
+        <b>Precio: $<%= producto.precioVenta %></b>
+      </li>
+    </ul>
+  </div>
+</div>

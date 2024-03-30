@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/Santiago/Desktop/SMGest/smgest/database/smgest.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="4614"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,9:mainProductos"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Categorias" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="93"/><column index="2" value="66"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Productos" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="90"/><column index="2" value="250"/><column index="3" value="96"/><column index="4" value="93"/><column index="5" value="116"/><column index="6" value="99"/><column index="7" value="102"/><column index="8" value="296"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Proveedores" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="99"/><column index="2" value="157"/><column index="3" value="281"/><column index="4" value="77"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Subcategorias" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="116"/><column index="2" value="118"/><column index="3" value="93"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- CARGA DE CATEGORIAS
+INSERT INTO &quot;Categorias&quot; (&quot;nombre&quot;) VALUES (&quot;vinos&quot;);
+INSERT INTO &quot;Categorias&quot; (&quot;nombre&quot;) VALUES (&quot;licores&quot;);
+INSERT INTO &quot;Categorias&quot; (&quot;nombre&quot;) VALUES (&quot;cervezas&quot;);
+INSERT INTO &quot;Categorias&quot; (&quot;nombre&quot;) VALUES (&quot;sinAlcohol&quot;);
+
+-- CARGA DE SUBCATEGORIAS PARA CATEGORIA VINO
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;malbec&quot;, (1));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;syrah&quot;, (1));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;bonarda&quot;, (1));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;torrontes&quot;, (1));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;cabernet sauvignon&quot;, (1));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;merlot&quot;, (1));
+
+-- CARGA DE SUBCATEGORIAS PARA CATEGORIA LICORES
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;fernet&quot;, (2));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;whisky&quot;, (2));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;tequila&quot;, (2));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;ron&quot;, (2));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;vodka&quot;, (2));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;ginebra&quot;, (2));
+
+-- CARGA DE SUBCATEGORIAS PARA CATEGORIA CERVEZAS
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;rubia&quot;, (3));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;roja&quot;, (3));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;negra&quot;, (3));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;ipa&quot;, (3));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;lager&quot;, (3));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;ale&quot;, (3));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;stout&quot;, (3));
+
+-- CARGA DE SUBCATEGORIAS PARA CATEGORIA SIN ALCOHOL
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;gaseosa&quot;, (4));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;jugo&quot;, (4));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;energizante&quot;, (4));
+INSERT INTO &quot;Subcategorias&quot; (&quot;nombre&quot;, &quot;categoriaID&quot;) VALUES (&quot;isotónica&quot;, (4));
+
+-- CARGA DE FORMAS DE PAGO
+INSERT INTO &quot;FormaPago&quot; (&quot;formaPago&quot;) VALUES (&quot;efectivo&quot;);
+INSERT INTO &quot;FormaPago&quot; (&quot;formaPago&quot;) VALUES (&quot;mercado pago&quot;);
+INSERT INTO &quot;FormaPago&quot; (&quot;formaPago&quot;) VALUES (&quot;naranja x&quot;);
+INSERT INTO &quot;FormaPago&quot; (&quot;formaPago&quot;) VALUES (&quot;bna&quot;);
+INSERT INTO &quot;FormaPago&quot; (&quot;formaPago&quot;) VALUES (&quot;brubank&quot;);
+INSERT INTO &quot;FormaPago&quot; (&quot;formaPago&quot;) VALUES (&quot;uala&quot;);
+INSERT INTO &quot;FormaPago&quot; (&quot;formaPago&quot;) VALUES (&quot;prex&quot;);
+INSERT INTO &quot;FormaPago&quot; (&quot;formaPago&quot;) VALUES (&quot;personal pay&quot;);
+INSERT INTO &quot;FormaPago&quot; (&quot;formaPago&quot;) VALUES (&quot;itau&quot;);
+
+-- CARGA DE PROVEEDORES
+INSERT INTO &quot;Proveedores&quot; (&quot;nombre&quot;, &quot;direccion&quot;, &quot;telefono&quot;) VALUES (&quot;Distribuidora Uman&quot;, &quot;Maria de Quiroga 188&quot;, 3804427285);
+INSERT INTO &quot;Proveedores&quot; (&quot;nombre&quot;, &quot;direccion&quot;, &quot;telefono&quot;) VALUES (&quot;Distribuidora San Expedito&quot;, &quot;Barrio Tambor de Tacuari&quot;, 3804133430);
+INSERT INTO &quot;Proveedores&quot; (&quot;nombre&quot;, &quot;direccion&quot;, &quot;telefono&quot;) VALUES (&quot;Distribuidora San Nicolas&quot;, &quot;San Nicolás de Bari 2700&quot;, 3804707304);
+INSERT INTO &quot;Proveedores&quot; (&quot;nombre&quot;, &quot;direccion&quot;, &quot;telefono&quot;) VALUES (&quot;Distribuidora Brasileño&quot;, &quot;Avenida Felix de la Colina y Avenida Santa Rosa&quot;, 3804918034);
+
+-- CARGA DE USUARIOS
+INSERT INTO Usuarios (nombre, apellido, username, contrasena, confirmar_contrasena, email, telefono, fec_nac, rol) VALUES 
+('Santiago', 'Moreno', 'smoreno', 'smorenoContraseña', 'smorenoContraseña', 'smoreno@example.com', 1234567890, '2000-01-01', 'admin'),
+('Omar', 'Gallardo', 'ogallardo', 'ogallardoContraseña', 'ogallardoContraseña', 'ogallardo@example.com', 0987654321, '2000-01-01', 'admin'),
+('Fabricio', 'Vega', 'fvega', 'fvegaContraseña', 'fvegaContraseña', 'fvega@example.com', 5555555555, '2000-01-01', 'cliente');
+
+-- CARGA DE VENDEDORES
+INSERT INTO Vendedores (nombre, apellido, direccion, telefono, telefonoEmergencia, fecNac) VALUES 
+('Omar', 'Gallardo', &quot;la rioja 123&quot;, 65148965, 65487642, '2000-01-01');
+
+-- CARGA DE PRODUCTOS CATEGORIA VINOS
+INSERT INTO Productos (&quot;nombre&quot;, &quot;precioVenta&quot;, &quot;categoriaID&quot;, &quot;subcategoriaID&quot;, &quot;proveedorID&quot;, &quot;presentacion&quot;, &quot;url_foto&quot;) VALUES
+(&quot;Trapiche Alaris&quot;, 3800, 1, 1, 4, &quot;botella 750ml&quot;, &quot;/img/vinotrapichealarismalbec750.webp&quot;),
+(&quot;Seismiles&quot;, 7000, 1, 2, 4, &quot;botella 750ml&quot;, &quot;/img/vinoseismilessyrah750.webp&quot;),
+(&quot;Cuesta del Rodeo&quot;, 3000, 1, 1, 4, &quot;botella 750ml&quot;, &quot;/img/vinocuestadelrodeomalbec750.webp&quot;),
+(&quot;Colon&quot;, 2900, 1, 1, 4, &quot;botella 750ml&quot;, &quot;/img/vinocolonmalbec750.webp&quot;),
+(&quot;Cafayate Cosecha Tardía&quot;, 3500, 1, 4, 4, &quot;botella 750ml&quot;, &quot;/img/vinocafayatecosechatardiatorrontes750.webp&quot;),
+(&quot;Colonia Las Liebres&quot;, 4600, 1, 3, 4, &quot;botella 750ml&quot;, &quot;/img/vinocolonialasliebresbonarda750.webp&quot;);
+
+-- CARGA DE PRODUCTOS CATEGORIA LICORES
+INSERT INTO Productos (&quot;nombre&quot;, &quot;precioVenta&quot;, &quot;categoriaID&quot;, &quot;subcategoriaID&quot;, &quot;proveedorID&quot;, &quot;presentacion&quot;, &quot;url_foto&quot;) VALUES
+(&quot;Fernet Branca&quot;, 8900, 2, 1, 4, &quot;botella 750ml&quot;, &quot;/img/fernetbranca.webp&quot;),
+(&quot;100 Pippers&quot;, 7600, 2, 8, 4, &quot;botella 750ml&quot;, &quot;/img/whisky100pippers.webp&quot;),
+(&quot;Sernova Clásico&quot;, 5000, 2, 11, 4, &quot;botella 750ml&quot;, &quot;/img/vodkasernovaclasico.webp&quot;),
+(&quot;Sernova Frutos del bosque&quot;, 7100, 2, 11, 4, &quot;botella 750ml&quot;, &quot;/img/vodkasernovafrutosdelbosque.webp&quot;),
+(&quot;Sernova Caribbean Blend&quot;, 7500, 2, 11, 4, &quot;botella 750ml&quot;, &quot;/img/vodkasernovacaribbeanblend.webp&quot;),
+(&quot;Conquistador Silver&quot;, 7300, 2, 9, 4, &quot;botella 750ml&quot;, &quot;/img/tequilaconquistadorsilver.webp&quot;),
+(&quot;DF Dorado&quot;, 3900, 2, 9, 4, &quot;botella 750ml&quot;, &quot;/img/tequiladfdorado.webp&quot;);
+
+-- CARGA DE PRODUCTOS CATEGORIA CERVEZAS
+INSERT INTO Productos (&quot;nombre&quot;, &quot;precioVenta&quot;, &quot;categoriaID&quot;, &quot;subcategoriaID&quot;, &quot;proveedorID&quot;, &quot;presentacion&quot;, &quot;url_foto&quot;) VALUES
+(&quot;Corona&quot;, 1600, 3, 13, 1, &quot;botella 330ml&quot;, &quot;/img/cervezacoronachica.webp&quot;),
+(&quot;Six Pack Imperial Golden&quot;, 8200, 3, 13, 1, &quot;six pack&quot;, &quot;/img/cervezasiximperialgolden.webp&quot;),
+(&quot;Pampa Lata&quot;, 1600, 3, 16, 1, &quot;lata 473ml&quot;, &quot;/img/cervezapampaipalata.webp&quot;),
+(&quot;Amstel Lager Lata&quot;, 900, 3, 13, 1, &quot;lata 473ml&quot;, &quot;/img/cervezaamstellagerlata.webp&quot;),
+(&quot;Pampa Lata&quot;, 1600, 3, 13, 1, &quot;lata 473ml&quot;, &quot;/img/cervezapampadoradalata.webp&quot;),
+(&quot;Heineken chica&quot;, 1600, 3, 13, 1, &quot;botella 330ml&quot;, &quot;/img/cervezaheinekenchica.webp&quot;),
+(&quot;Brahma Dorada Lata&quot;, 1500, 3, 13, 1, &quot;lata 473ml&quot;, &quot;/img/cervezabrahmalata.webp&quot;),
+(&quot;Imperial Negra Lata&quot;, 1500, 3, 15, 1, &quot;lata 473ml&quot;, &quot;/img/imperiallatanegra.webp&quot;),
+(&quot;Six Pack Imperial Negra&quot;, 8500, 3, 15, 1, &quot;six pack&quot;, &quot;/img/siximperialnegra.webp&quot;);
+
+-- CARGA DE PRODUCTOS CATEGORIA SIN ALCOHOL
+INSERT INTO Productos (&quot;nombre&quot;, &quot;precioVenta&quot;, &quot;categoriaID&quot;, &quot;subcategoriaID&quot;, &quot;proveedorID&quot;, &quot;presentacion&quot;, &quot;url_foto&quot;) VALUES
+(&quot;Coca Cola 3lts&quot;, 4400, 4, 20, 1, &quot;descartable&quot;, &quot;/img/cocacola3litros.jpg&quot;),
+(&quot;Coca Cola 2.25lts&quot;, 3500, 4, 20, 1, &quot;descartable&quot;, &quot;/img/cocacola225litros.jpg&quot;),
+(&quot;Coca Cola 1.5lts&quot;, 2400, 4, 20, 1, &quot;descartable&quot;, &quot;/img/cocacola15litros.jpg&quot;),
+(&quot;Coca Cola 1.5lts retornable&quot;, 2400, 4, 20, 1, &quot;retornable&quot;, &quot;/img/cocacola15retornable.png&quot;),
+(&quot;Sprite 3lts&quot;, 4200, 4, 20, 1, &quot;descartable&quot;, &quot;/img/sprite3litros.webp&quot;),
+(&quot;Agua Saborizada Aquarius Pera&quot;, 2200, 4, 21, 1, &quot;descartable&quot;, &quot;/img/aquariuspera.webp&quot;),
+(&quot;Agua Saborizada Aquarius Pomelo Rosado&quot;, 2200, 4, 21, 1, &quot;descartable&quot;, &quot;/img/aquariuspomelorosado.webp&quot;),
+(&quot;Agua Saborizada Aquarius Manzana&quot;, 2200, 4, 21, 1, &quot;descartable&quot;, &quot;/img/aquariusmanzana.webp&quot;),
+(&quot;Speed&quot;, 1750, 4, 22, 1, &quot;descartable&quot;, &quot;/img/speed.webp&quot;),
+(&quot;Monster tradicional&quot;, 1750, 4, 22, 1, &quot;descartable&quot;, &quot;/img/monstertradicional.webp&quot;),
+(&quot;Monster de mango&quot;, 1750, 4, 22, 1, &quot;descartable&quot;, &quot;/img/monstermango.png&quot;),
+(&quot;Monster de ananá&quot;, 1750, 4, 22, 1, &quot;descartable&quot;, &quot;/img/monsteranana.jpg&quot;);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
