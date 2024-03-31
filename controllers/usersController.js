@@ -1,7 +1,6 @@
 const { validationResult } = require("express-validator");
 const path = require("path");
 const bcrypt = require("bcryptjs");
-const Usuario = require("../database/models/Usuarios");
 const db = require("../database/models");
 
 const controlador = {
@@ -15,27 +14,25 @@ const controlador = {
   },
 
   guardarUsuario: async (req, res) => {
-    // Validar los resultados de la validación
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      // Si hay errores, renderizar nuevamente la página de registro con los mensajes de error
       return res.render("users/registro", { errors: errors.array() });
     }
 
-    // Extraer todos los datos del cuerpo del formulario
-    const nombre = req.body.nombre;
-    const apellido = req.body.apellido;
-    const username = req.body.username;
-    const email = req.body.email;
-    const contrasena = req.body.contrasena;
-    const confirmar_contrasena = req.body.confirmar_contrasena;
-    const telefono = req.body.telefono;
-    const fec_nac = req.body.fec_nac;
-    const rol = req.body.rol;
+    const {
+      nombre,
+      apellido,
+      username,
+      email,
+      contrasena,
+      confirmar_contrasena,
+      telefono,
+      fec_nac,
+      rol,
+    } = req.body;
 
     try {
-      // Imprimir los datos que se enviarán a la base de datos
       console.log("Datos a enviar a la base de datos:", {
         nombre,
         apellido,
@@ -43,12 +40,9 @@ const controlador = {
         email,
         telefono,
         fec_nac,
-        contrasena,
-        confirmar_contrasena,
         rol,
       });
 
-      // Crear un nuevo usuario en la base de datos con todos los campos del formulario
       await db.Usuarios.create({
         nombre,
         apellido,
@@ -61,25 +55,23 @@ const controlador = {
         rol,
       });
 
-      // Redireccionar al usuario a la página de inicio de sesión
       res.redirect("/login");
     } catch (error) {
       console.error("Error al guardar el usuario en la base de datos:", error);
-      // Manejar el error, tal vez renderizando nuevamente la página de registro con un mensaje de error
       res.render("users/registro", {
         error: "Error al registrar el usuario. Por favor, inténtalo de nuevo.",
       });
     }
   },
 
-  usuarios: (req, res) => {
-    db.Usuarios.findAll({
-      raw: true,
-      nest: true,
-    }).then(function (usuario) {
-      res.render("users/admin", { usuario: usuario });
-    });
-  },
+  // usuarios: (req, res) => {
+  //   db.Usuarios.findAll({
+  //     raw: true,
+  //     nest: true,
+  //   }).then(function (usuario) {
+  //     res.render("users/admin", { usuario: usuario });
+  //   });
+  // },
 
   // destroy: (req, res) => {
   //   const { id } = req.params;

@@ -7,10 +7,29 @@ const cors = require("cors");
 const methodOverride = require("method-override");
 const app = express();
 
+// // PROBANDO CREACIÓN DIRECTA DE USUARIOS
+// Salió bien la carga directa. El problema está en la captación de datos desde el req.body
+
+// const db = require("./database/models");
+
+// db.Usuarios.create({
+//   nombre: "Prueba",
+//   apellido: "Carga",
+//   username: "pcarga1",
+//   email: "pcarga1@gmail.com",
+//   contrasena: "pruebaCarga",
+//   confirmar_contrasena: "pruebaCarga",
+//   telefono: "12345678",
+//   fec_nac: "2001-03-29",
+//   rol: "cliente",
+// });
+
 app.use("", express.static(`${__dirname}/public`)); // Directorio público para archivos
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// Configuración de body-parser para analizar el cuerpo de las solicitudes en JSON
+app.use(bodyParser.json());
+// Configuración de body-parser para analizar los cuerpos de las solicitudes codificadas en URL
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors());
 app.use("", express.static(`${__dirname}/publics`));
@@ -25,6 +44,7 @@ const rutasUsuarios = require("./routes/usersRoutes");
 
 // Importar las rutas de la API
 const apiRoutes = require("./controllers/api/apiRoutes.js");
+const { body } = require("express-validator");
 
 // Usar las rutas de la API
 app.use("/api", apiRoutes);
@@ -32,25 +52,6 @@ app.use("/api", apiRoutes);
 // Importar rutas del proyecto
 app.use("/", rutasProductos);
 app.use("/usuarios", rutasUsuarios);
-
-// Rutas de prueba de carga de datos
-app.get("/prueba", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "prueba.html"));
-});
-app.post("/datos", (req, res) => {
-  let datos_html = false;
-
-  try {
-    datos_html = fs.readFileSync("./views/datos.html", {
-      encoding: "utf8",
-      flag: "r",
-    });
-    datos_html = datos_html.replace("%texto", req.body.texto);
-  } catch (error) {
-    res.status(200).send("Archivo no encontrado." + error);
-  }
-  return res.send(datos_html);
-});
 
 app.set("view engine", "ejs");
 app.listen(PORT, () => console.log("Server funcionando en puerto " + PORT));

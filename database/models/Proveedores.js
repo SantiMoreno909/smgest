@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const Productos = require("./Productos");
 
 module.exports = (sequelize) => {
   const Proveedores = sequelize.define(
@@ -24,6 +25,13 @@ module.exports = (sequelize) => {
       timestamps: false,
     }
   );
+
+  Proveedores.associate = function (models) {
+    Proveedores.hasMany(models.Productos, {
+      foreignKey: "proveedorID",
+      as: "Productos",
+    });
+  };
 
   return Proveedores;
 };
