@@ -11,26 +11,26 @@ const controllerAPI = {
       raw: true,
       nest: true,
     }).then(function (productos) {
-      let contador = {};
       let products = productos.map((producto) => {
         return {
           id: producto.ProductoID,
           name: producto.nombre,
           description: producto.presentacion,
-          categoryId: producto.categoriaID,
-          subcategoryId: producto.subcategoriaID,
-          providerId: producto.ProveedorID,
+          category: producto.Categorias.nombre, // Obtener el nombre de la categoría utilizando el campo asociado
+          subcategory: producto.Subcategorias.nombre, // Obtener el nombre de la subcategoría utilizando el campo asociado
+          provider: producto.Proveedores.nombre, // Obtener el nombre del proveedor utilizando el campo asociado
           detail: `/api/productos/${producto.ProductoID}`,
           url_foto: producto.url_foto,
         };
       });
       const response = {
-        count: productos.length,
+        contador: products.length,
         productos: products,
       };
       res.json(response);
     });
   },
+
   productoPorId: (req, res) => {
     let id = req.params.id;
     db.Productos.findByPk(id).then(function (producto) {
@@ -44,8 +44,8 @@ const controllerAPI = {
     }).then(function (usuarios) {
       let users = usuarios.map((usuarios) => {
         return {
-          id: usuarios.id,
-          name: usuarios.nombre + usuarios.apellido,
+          id: usuarios.UsuarioID,
+          name: usuarios.nombre + " " + usuarios.apellido,
           username: usuarios.username,
           email: usuarios.email,
           telefono: usuarios.telefono,
