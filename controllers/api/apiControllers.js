@@ -16,9 +16,12 @@ const controllerAPI = {
           id: producto.ProductoID,
           name: producto.nombre,
           description: producto.presentacion,
-          category: producto.Categorias.nombre, // Obtener el nombre de la categoría utilizando el campo asociado
-          subcategory: producto.Subcategorias.nombre, // Obtener el nombre de la subcategoría utilizando el campo asociado
-          provider: producto.Proveedores.nombre, // Obtener el nombre del proveedor utilizando el campo asociado
+          category: producto.Categorias.nombre,
+          categoryID: producto.categoriaID,
+          subcategory: producto.Subcategorias.nombre,
+          subcategoryID: producto.subcategoriaID,
+          provider: producto.Proveedores.nombre,
+          providerID: producto.ProveedorID,
           detail: `/api/productos/${producto.ProductoID}`,
           url_foto: producto.url_foto,
         };
@@ -65,6 +68,24 @@ const controllerAPI = {
     let id = req.params.id;
     const usuarios = db.Usuarios.findByPk(id).then(function (usuarios) {
       return res.json(usuarios);
+    });
+  },
+  categorias: (req, res) => {
+    db.Categorias.findAll({
+      raw: true,
+      nest: true,
+    }).then(function (categorias) {
+      let categorys = categorias.map((categoria) => {
+        return {
+          id: categoria.categoriaID,
+          name: categoria.nombre,
+        };
+      });
+      const response = {
+        contador: categorys.length,
+        productos: categorys,
+      };
+      res.json(response);
     });
   },
 };

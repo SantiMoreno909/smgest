@@ -6,5 +6,6 @@ router.get("/productos", controller.productos);
 router.get("/productos/:id", controller.productoPorId);
 router.get("/usuarios", controller.usuarios);
 router.get("/usuarios/:id", controller.usuarioPorId);
+router.get("/categorias", controller.categorias);
 
 module.exports = router;
