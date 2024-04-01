@@ -15,6 +15,7 @@ const controllerAPI = {
         return {
           id: producto.ProductoID,
           name: producto.nombre,
+          price: producto.precioVenta,
           description: producto.presentacion,
           category: producto.Categorias.nombre,
           categoryID: producto.categoriaID,

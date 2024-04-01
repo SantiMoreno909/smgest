@@ -55,7 +55,7 @@ const controlador = {
         rol,
       });
 
-      res.redirect("/login");
+      res.redirect("login");
     } catch (error) {
       console.error("Error al guardar el usuario en la base de datos:", error);
       res.render("users/registro", {

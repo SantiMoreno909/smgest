@@ -15,7 +15,7 @@
     <form
       action="/usuarios/guardarUsuario"
       method="POST"
-      enctype="multipart/form-data"
+      enctype="application/x-www-form-urlencoded"
     >
       <div class="form-row">
         <div class="form-group col-md-6">
@@ -95,9 +95,13 @@
         value="cliente"
         name="rol"
       />
-      <button type="submit" class="btn btn-primary" name="submit" id="submit">
-        Registrarme
-      </button>
+      <input
+        type="submit"
+        class="btn btn-primary"
+        name="submit"
+        id="submit"
+        value="Registrarme"
+      />
     </form>
     <%- include('../partials/footer.ejs')%>
   </body>
