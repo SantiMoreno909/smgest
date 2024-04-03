@@ -4,22 +4,20 @@
   <body>
     <%- include('../partials/navbar.ejs')%>
     <h3 class="section-title">¡Que placer verte otra vez!</h3>
-    <% if (typeof errors !=='undefined' && errors.length> 0) { %>
-    <ul>
-      <% errors.forEach(error=> { %>
-      <li><%= error.msg %></li>
-      <% }); %>
-    </ul>
-    <% } %>
     <div class="errores"></div>
-    <form>
+    <form
+      action="/usuarios/ingresar"
+      method="POST"
+      enctype="application/x-www-form-urlencoded"
+    >
       <div class="form-group">
         <label for="exampleInputEmail1">Correo electrónico:</label>
         <input
           type="email"
           class="form-control"
-          id="exampleInputEmail1"
+          id="email"
           aria-describedby="emailHelp"
+          name="email"
         />
         <small id="emailHelp" class="form-text text-muted"
           >Nunca compartiremos tu email con nadie</small
@@ -30,10 +28,17 @@
         <input
           type="password"
           class="form-control"
-          id="exampleInputPassword1"
+          id="contrasena"
+          name="contrasena"
         />
       </div>
-      <button type="submit" class="btn btn-primary">Ingresar</button>
+      <input
+        type="submit"
+        class="btn btn-primary"
+        name="submit"
+        id="submit"
+        value="Ingresar"
+      />
       <br />
       <br />
       <a href="/usuarios/registro" class="form-link">¿No tienes cuenta?</a>

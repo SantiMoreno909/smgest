@@ -1,5 +1,4 @@
 const { validationResult } = require("express-validator");
-const path = require("path");
 const bcrypt = require("bcryptjs");
 const db = require("../database/models");
 
@@ -61,6 +60,47 @@ const controlador = {
       res.render("users/registro", {
         error: "Error al registrar el usuario. Por favor, inténtalo de nuevo.",
       });
+    }
+  },
+
+  ingresar: async (req, res) => {
+    const { email, contrasena } = req.body;
+    console.log(email + " - " + contrasena);
+
+    try {
+      // Buscar el usuario en la base de datos por su email
+      const usuario = await db.Usuarios.findOne(
+        { where: { email } } && { where: { contrasena } }
+      );
+
+      // Verificar si se encontró el usuario
+      if (usuario) {
+        // Comparar la contraseña proporcionada con la almacenada en la base de datos
+        const contrasenaValida = () => {
+          contrasena === usuario.contrasena;
+        };
+
+        if (contrasenaValida) {
+          // Si la contraseña es válida, redirigir al inicio
+          res.redirect("/");
+        } else {
+          // Si la contraseña no es válida, redirigir a la página de inicio de sesión con un mensaje de error
+          res.redirect(
+            "/usuarios/login?error=Usuario y/o contraseña incorrectos"
+          );
+        }
+      } else {
+        // Si no se encontró el usuario, redirigir a la página de inicio de sesión con un mensaje de error
+        res.redirect(
+          "/usuarios/login?error=Usuario y/o contraseña no encontrados"
+        );
+      }
+    } catch (error) {
+      console.error("Error al intentar iniciar sesión:", error);
+      // Manejar el error y redirigir a la página de inicio de sesión con un mensaje de error
+      res.redirect(
+        "/usuarios/login?error=Error al intentar iniciar sesión. Por favor, inténtalo de nuevo."
+      );
     }
   },
 

@@ -5,6 +5,8 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const methodOverride = require("method-override");
+const multer = require("multer");
+const { body } = require("express-validator");
 const app = express();
 
 // // PROBANDO CREACIÓN DIRECTA DE USUARIOS
@@ -31,10 +33,23 @@ app.use(bodyParser.json());
 // Configuración de body-parser para analizar los cuerpos de las solicitudes codificadas en URL
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Configuración de multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/img");
+  },
+  filename: (req, file, cb) => {
+    let filename = `${Date.now()}_img${path.extname(file.originalname)}`;
+    cb(null, filename);
+  },
+});
+
+const uploadFile = multer({ storage });
+
+// Distintos app.use
 app.use(cors());
 app.use("", express.static(`${__dirname}/publics`));
 app.use(methodOverride("_method")); //para el PUT y DELETE
-/*para el crud*/
 
 // Configuraciones de la app
 
