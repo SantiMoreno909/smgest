@@ -6,32 +6,28 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const methodOverride = require("method-override");
 const multer = require("multer");
-const { body } = require("express-validator");
+const session = require("express-session");
 const app = express();
-
-// // PROBANDO CREACIÓN DIRECTA DE USUARIOS
-// Salió bien la carga directa. El problema está en la captación de datos desde el req.body
-
-// const db = require("./database/models");
-
-// db.Usuarios.create({
-//   nombre: "Prueba",
-//   apellido: "Carga",
-//   username: "pcarga1",
-//   email: "pcarga1@gmail.com",
-//   contrasena: "pruebaCarga",
-//   confirmar_contrasena: "pruebaCarga",
-//   telefono: "12345678",
-//   fec_nac: "2001-03-29",
-//   rol: "cliente",
-// });
 
 app.use("", express.static(`${__dirname}/public`)); // Directorio público para archivos
 
 // Configuración de body-parser para analizar el cuerpo de las solicitudes en JSON
 app.use(bodyParser.json());
-// Configuración de body-parser para analizar los cuerpos de las solicitudes codificadas en URL
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Configuración de session
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      // Configura el tiempo de vida de la cookie de sesión en el navegador (en milisegundos)
+      // Aquí, la sesión expirará después de 24 horas de inactividad
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  })
+);
 
 // Configuración de multer
 const storage = multer.diskStorage({
@@ -59,7 +55,6 @@ const rutasUsuarios = require("./routes/usersRoutes");
 
 // Importar las rutas de la API
 const apiRoutes = require("./controllers/api/apiRoutes.js");
-const { body } = require("express-validator");
 
 // Usar las rutas de la API
 app.use("/api", apiRoutes);

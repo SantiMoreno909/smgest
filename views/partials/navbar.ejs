@@ -30,9 +30,21 @@
       <li class="nav-item">
         <a class="nav-link" href="/usuarios/pedidos">Ver Carrito</a>
       </li>
+      <% if (req.session.username) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/usuarios/detallesUsuario">
+          <strong><%= req.session.username %></strong></a
+        >
+      </li>
+      <% } else { %>
       <li class="nav-item">
         <a class="nav-link" href="/usuarios/login">Mi Cuenta</a>
       </li>
+      <% } %> <% if (req.session.username) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/usuarios/cerrarSesion"> Cerrar Sesión</a>
+      </li>
+      <% } else { %> <% } %>
     </ul>
   </div>
 </nav>

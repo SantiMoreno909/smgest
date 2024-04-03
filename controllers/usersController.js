@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const db = require("../database/models");
+const { Usuarios } = require("../database/models");
 
 const controlador = {
   login: (req, res) => {
@@ -32,23 +33,24 @@ const controlador = {
     } = req.body;
 
     try {
-      console.log("Datos a enviar a la base de datos:", {
-        nombre,
-        apellido,
-        username,
-        email,
-        telefono,
-        fec_nac,
-        rol,
-      });
+      // Verificar si las contraseñas coinciden
+      if (contrasena !== confirmar_contrasena) {
+        return res.render("users/registro", {
+          error: "Las contraseñas no coinciden",
+        });
+      }
 
+      // Hash de la contraseña antes de guardarla en la base de datos
+      const hashedPassword = await bcrypt.hash(contrasena, 10); // Se utiliza una sal de 10 rounds
+
+      // Crear el nuevo usuario en la base de datos con la contraseña encriptada
       await db.Usuarios.create({
         nombre,
         apellido,
         username,
         email,
-        contrasena,
-        confirmar_contrasena,
+        contrasena: hashedPassword, // Se guarda la contraseña encriptada
+        confirmar_contrasena: hashedPassword,
         telefono,
         fec_nac,
         rol,
@@ -63,152 +65,146 @@ const controlador = {
     }
   },
 
-  ingresar: async (req, res) => {
-    const { email, contrasena } = req.body;
-    console.log(email + " - " + contrasena);
-
+  iniciarSesion: async (req, res) => {
     try {
-      // Buscar el usuario en la base de datos por su email
-      const usuario = await db.Usuarios.findOne(
-        { where: { email } } && { where: { contrasena } }
-      );
+      console.log("Iniciando sesión");
+      // Validar los resultados de la validación
+      const errors = validationResult(req);
 
-      // Verificar si se encontró el usuario
-      if (usuario) {
-        // Comparar la contraseña proporcionada con la almacenada en la base de datos
-        const contrasenaValida = () => {
-          contrasena === usuario.contrasena;
-        };
+      if (!errors.isEmpty()) {
+        return res.render("users/login", { errors: errors.array() });
+      }
 
-        if (contrasenaValida) {
-          // Si la contraseña es válida, redirigir al inicio
-          res.redirect("/");
-        } else {
-          // Si la contraseña no es válida, redirigir a la página de inicio de sesión con un mensaje de error
-          res.redirect(
-            "/usuarios/login?error=Usuario y/o contraseña incorrectos"
-          );
-        }
+      const { email, contrasena } = req.body;
+      console.log("Iniciando");
+      // Buscar al usuario en la base de datos utilizando Sequelize
+      const usuario = await Usuarios.findOne({ where: { email } });
+      console.log("Usuario encontrado:", usuario);
+
+      if (usuario && bcrypt.compareSync(contrasena, usuario.contrasena)) {
+        req.session.UsuarioID = usuario.UsuarioID;
+        req.session.username = usuario.username;
+        req.session.rol = usuario.rol;
+        console.log(req.session);
+        res.redirect("/");
       } else {
-        // Si no se encontró el usuario, redirigir a la página de inicio de sesión con un mensaje de error
-        res.redirect(
-          "/usuarios/login?error=Usuario y/o contraseña no encontrados"
-        );
+        res.render("users/login", {
+          errors: [{ msg: "Usuario y/o contraseña incorrectos" }],
+        });
       }
     } catch (error) {
-      console.error("Error al intentar iniciar sesión:", error);
-      // Manejar el error y redirigir a la página de inicio de sesión con un mensaje de error
+      console.error("Error en la función iniciarSesion:", error);
+      res.status(500).send("Error interno del servidor");
+    }
+  },
+
+  detallesUsuario: async (req, res) => {
+    try {
+      const sessionUsername = req.session.username;
+      console.log("USERNAME: " + sessionUsername);
+
+      const usuario = await db.Usuarios.findAll({
+        where: {
+          username: sessionUsername,
+        },
+        raw: true,
+        nest: true,
+      });
+
+      res.render("users/detallesUsuario", { usuario });
+    } catch (error) {
+      console.error("Error al buscar usuarios:", error);
+      // Manejar el error adecuadamente, por ejemplo, mostrando un mensaje de error en una página de error
+      res.render("users/detallesUsuario", {
+        error: "Error al registrar el usuario. Por favor, inténtalo de nuevo.",
+      });
+    }
+  },
+
+  destruirUsuario: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      // Buscar el usuario en la base de datos por su ID y eliminarlo
+      await db.Usuarios.destroy({
+        where: {
+          id: id,
+        },
+      });
+
+      res.redirect("/users/usuarios");
+    } catch (error) {
+      console.error("Error al intentar eliminar el usuario:", error);
       res.redirect(
-        "/usuarios/login?error=Error al intentar iniciar sesión. Por favor, inténtalo de nuevo."
+        "/users/usuarios?error=Error al intentar eliminar el usuario"
       );
     }
   },
 
-  // usuarios: (req, res) => {
-  //   db.Usuarios.findAll({
-  //     raw: true,
-  //     nest: true,
-  //   }).then(function (usuario) {
-  //     res.render("users/admin", { usuario: usuario });
-  //   });
-  // },
+  editarUsuario: async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const usuario = await db.Usuario.findByPk(userId);
 
-  // destroy: (req, res) => {
-  //   const { id } = req.params;
-  //   const usersIndex = user.findIndex((user) => user.id === parseInt(id));
-  //   user.splice(usersIndex, 1);
-  //   fs.writeFileSync(userFilePath, JSON.stringify(user), "utf-8");
-  //   res.redirect("/users/usuarios");
-  // },
+      if (!usuario) {
+        res.render("usuario"); // Manejo de caso en que no se encuentra el usuario
+        return;
+      }
 
-  // editar: (req, res) => {
-  //   let userId = req.params.id;
-  //   const result = user.find((data) => {
-  //     if (data.id == userId) {
-  //       return data;
-  //     }
-  //   });
+      res.render("users/userEdit", { usuario });
+    } catch (error) {
+      console.error("Error al intentar obtener el usuario:", error);
+      res.render("usuario", { error: "Error al obtener el usuario" });
+    }
+  },
 
-  //   res.render("users/userEdit", { usuario: result });
-  // },
+  actualizarUsuario: async (req, res) => {
+    try {
+      const {
+        nombre,
+        apellido,
+        username,
+        email,
+        contrasena,
+        confirmar_contrasena,
+        telefono,
+        fec_nac,
+        rol,
+      } = req.body;
+      const id = parseInt(req.params.id);
 
-  // update: (req, res) => {
-  //   const {
-  //     Nombre,
-  //     Apellido,
-  //     email,
-  //     tel,
-  //     nacimiento,
-  //     genero,
-  //     type,
-  //     contrasena,
-  //     fotoPerfil,
-  //     confirmar_contrasenia,
-  //     aceptar_terminos,
-  //     newsletter,
-  //   } = req.body;
-  //   const id = parseInt(req.params.id);
-  //   const index = user.findIndex((user) => user.id === id);
+      // Buscar el usuario en la base de datos por su ID
+      const usuario = await db.Usuario.findByPk(id);
 
-  //   if (index === -1) {
-  //     res.render("usuario");
-  //     return;
-  //   }
+      if (!usuario) {
+        res.render("usuario"); // Manejo de caso en que no se encuentra el usuario
+        return;
+      }
 
-  //   user[index].Nombre = Nombre;
-  //   user[index].Apellido = Apellido;
-  //   user[index].email = email;
-  //   user[index].tel = tel;
-  //   user[index].nacimiento = nacimiento;
-  //   user[index].genero = genero;
-  //   user[index].type = type;
-  //   user[index].contrasena = contrasena;
-  //   user[index].confirmar_contrasenia = confirmar_contrasenia;
-  //   user[index].fotoPerfil = fotoPerfil;
-  //   user[index].aceptar_terminos = aceptar_terminos;
-  //   user[index].newsletter = newsletter;
+      // Actualizar los datos del usuario
+      await usuario.update({
+        nombre,
+        apellido,
+        username,
+        email,
+        contrasena,
+        confirmar_contrasena,
+        telefono,
+        fec_nac,
+        rol,
+      });
 
-  //   fs.writeFileSync(userFilePath, JSON.stringify(user), "utf-8");
-  //   res.redirect("/users/usuarios");
-  // },
+      res.redirect("/users/usuarios");
+    } catch (error) {
+      console.error("Error al intentar actualizar el usuario:", error);
+      res.render("usuario", { error: "Error al actualizar el usuario" });
+    }
+  },
 
-  // iniciarSesion: async (req, res) => {
-  //   try {
-  //     console.log("Iniciando sesión. Modelo Usuarios:", Usuarios);
-  //     // Validar los resultados de la validación
-  //     const errors = validationResult(req);
-
-  //     if (!errors.isEmpty()) {
-  //       return res.render("users/login", { errors: errors.array() });
-  //     }
-
-  //     const { email, contrasena } = req.body;
-  //     console.log("Iniciando");
-  //     // Buscar al usuario en la base de datos utilizando Sequelize
-  //     const usuario = await Usuarios.findOne({ where: { email } });
-  //     console.log("Usuario encontrado:", usuario);
-
-  //     if (
-  //       usuario &&
-  //       bcrypt.compareSync(contrasena, bcrypt.hashSync(usuario.contrasenia))
-  //     ) {
-  //       req.session.user = usuario;
-  //       res.redirect("/");
-  //     } else {
-  //       res.render("users/login", {
-  //         errors: [{ msg: "Usuario y/o contraseña incorrectos" }],
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error en la función iniciarSesion:", error);
-  //     res.status(500).send("Error interno del servidor");
-  //   }
-  // },
-
-  // cerrarSesion: (req, res) => {
-  //   req.session.destroy();
-  //   res.redirect("/");
-  // },
+  cerrarSesion: (req, res) => {
+    req.session.destroy();
+    res.redirect("/");
+  },
 };
 
 module.exports = controlador;
