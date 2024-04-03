@@ -11,3 +11,14 @@ form {
   color: black;
   text-decoration: underline;
 }
+
+.tdModifUser {
+  padding: 10px;
+}
+
+.inputModifUser {
+  background-color: #c6c7c9;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  text-align: center;
+}

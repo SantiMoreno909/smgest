@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const db = require("../database/models");
 const { Usuarios } = require("../database/models");
+const { unsubscribe } = require("../routes/usersRoutes");
 
 const controlador = {
   login: (req, res) => {
@@ -100,10 +101,10 @@ const controlador = {
 
   detallesUsuario: async (req, res) => {
     try {
-      const sessionUsername = req.session.username;
+      const sessionUsername = req.params.username; // Obtener el username de los parámetros de la URL
       console.log("USERNAME: " + sessionUsername);
 
-      const usuario = await db.Usuarios.findAll({
+      const usuario = await db.Usuarios.findOne({
         where: {
           username: sessionUsername,
         },
@@ -120,6 +121,25 @@ const controlador = {
       });
     }
   },
+
+  // editarUsuario: async (req, res) => {
+  //   try {
+  //     const UsuarioID = usuario.UsuarioID;
+  //     const usuario = await db.Usuario.findByPk(UsuarioID);
+
+  //     if (!usuario) {
+  //       res.render("users/detallesUsuario"); // Manejo de caso en que no se encuentra el usuario
+  //       return;
+  //     }
+
+  //     res.render("users/detallesUsuario", { usuario });
+  //   } catch (error) {
+  //     console.error("Error al intentar obtener el usuario:", error);
+  //     res.render("users/detallesUsuario", {
+  //       error: "Error al obtener el usuario",
+  //     });
+  //   }
+  // },
 
   destruirUsuario: async (req, res) => {
     const { id } = req.params;
@@ -138,66 +158,6 @@ const controlador = {
       res.redirect(
         "/users/usuarios?error=Error al intentar eliminar el usuario"
       );
-    }
-  },
-
-  editarUsuario: async (req, res) => {
-    try {
-      const userId = req.params.id;
-      const usuario = await db.Usuario.findByPk(userId);
-
-      if (!usuario) {
-        res.render("usuario"); // Manejo de caso en que no se encuentra el usuario
-        return;
-      }
-
-      res.render("users/userEdit", { usuario });
-    } catch (error) {
-      console.error("Error al intentar obtener el usuario:", error);
-      res.render("usuario", { error: "Error al obtener el usuario" });
-    }
-  },
-
-  actualizarUsuario: async (req, res) => {
-    try {
-      const {
-        nombre,
-        apellido,
-        username,
-        email,
-        contrasena,
-        confirmar_contrasena,
-        telefono,
-        fec_nac,
-        rol,
-      } = req.body;
-      const id = parseInt(req.params.id);
-
-      // Buscar el usuario en la base de datos por su ID
-      const usuario = await db.Usuario.findByPk(id);
-
-      if (!usuario) {
-        res.render("usuario"); // Manejo de caso en que no se encuentra el usuario
-        return;
-      }
-
-      // Actualizar los datos del usuario
-      await usuario.update({
-        nombre,
-        apellido,
-        username,
-        email,
-        contrasena,
-        confirmar_contrasena,
-        telefono,
-        fec_nac,
-        rol,
-      });
-
-      res.redirect("/users/usuarios");
-    } catch (error) {
-      console.error("Error al intentar actualizar el usuario:", error);
-      res.render("usuario", { error: "Error al actualizar el usuario" });
     }
   },
 

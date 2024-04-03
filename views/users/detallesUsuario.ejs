@@ -3,21 +3,83 @@
   <%- include('../partials/head.ejs')%>
   <body>
     <%- include('../partials/navbar.ejs')%>
-    <h3 class="section-title">Hola, <%= usuario.nombre %>!</h3>
-    <p>Estos son los datos de tu cuenta:</p>
-    <div class="d-flex col">
-      <div class="detalles">
-        <p>Nombre: <%= usuario.nombre %></p>
-        <p>Apellido: <%= usuario.apellido %></p>
-        <!-- Agrega más campos según tus necesidades -->
-      </div>
-      <button class="btnUsuarios cambiosUsuario">
-        <a href="/">Guardar cambios</a>
-      </button>
-      <button class="btnUsuarios eliminarUsuario">
-        <a href="/">Eliminar mi cuenta</a>
-      </button>
+    <h3 class="section-title">¡Hola <%= usuario.nombre %>!</h3>
+    <div class="container">
+      <p>Estos son los datos de tu cuenta:</p>
+      <form 
+      action="/usuarios/modificarUsuario/<%= usuario.UsuarioID %>?_method=PUT"
+      method="POST"
+      enctype="application/x-www-form-urlencoded">
+        <table className="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tdModifUser">
+                <input class="inputModifUser" type="text" name="nombre" value="<%= usuario.nombre %>"></input>
+            </td>
+            <td class="tdModifUser">
+                <input class="inputModifUser" type="text" name="apellido" value="<%= usuario.apellido %>"></input>
+            </td>
+        </tr>
+        
+        </tbody>
+        </table>
+        <table className="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            
+            <td class="tdModifUser">
+                <input class="inputModifUser" type="text" name="username" value="<%= usuario.username %>"></input>
+            </td>
+            <td class="tdModifUser">
+                <input class="inputModifUser" type="email" name="email" value="<%= usuario.email %>"></input>
+            </td>
+            
+        </tr>
+        
+        </tbody>
+        </table>
+        <table className="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Fecha de nacimiento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            
+            <td class="tdModifUser">
+                <input class="inputModifUser" type="tel" name="telefono" value="<%= usuario.telefono %>"></input>
+            </td>
+            <td class="tdModifUser">
+              <% // Formatear la fecha en formato DD/MM/AAAA %>
+              <% const fecha = new Date(usuario.fec_nac); %>
+              <% const dia = fecha.getDate(); %>
+              <% const mes = fecha.getMonth() + 1; %>
+              <% const año = fecha.getFullYear(); %>
+              <% const fechaFormateada = `${dia}/${mes}/${año}`; %>
+              <input class="inputModifUser" type="text" name="fec_nac" value="<%= fechaFormateada %>"></input>
+          </td>
+        </tr>
+        
+        </tbody>
+        </table>
+        <input type="submit" class="btn btn-primary" value="Guardar cambios">
+      </form>
     </div>
+    
     <%- include('../partials/footer.ejs')%>
   </body>
   <script

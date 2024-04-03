@@ -104,17 +104,14 @@ router.post(
 );
 
 // Ruta para ver detalles del usuario
-router.get("/detallesUsuario", controller.detallesUsuario);
+router.get("/detallesUsuario/:username", controller.detallesUsuario);
+// router.put("/modificarUsuario/:username", controller.editarUsuario);
 
 // RUTAS COPIADAS DE LA CASACA
 // Ruta para eliminar usuarios
 router.delete("/eliminar/:id", controller.destruirUsuario);
 
-// Rutas para editar usuarios
-router.get("/editar/:id", controller.editarUsuario);
-router.put("/editar/:id", controller.actualizarUsuario);
-
 // Ruta para cerrar sesión
-router.get("/logout", controller.cerrarSesion);
+router.get("/cerrarSesion", controller.cerrarSesion);
 
 module.exports = router;

@@ -15,19 +15,28 @@ app.use("", express.static(`${__dirname}/public`)); // Directorio público para 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Configuración de session
+// Configuración del middleware express-session
 app.use(
   session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: true,
+    secret: "secret", // Una cadena secreta utilizada para firmar la cookie de sesión
+    resave: false, // Evita guardar sesiones no modificadas
+    saveUninitialized: false, // Evita guardar sesiones no inicializadas
     cookie: {
-      // Configura el tiempo de vida de la cookie de sesión en el navegador (en milisegundos)
-      // Aquí, la sesión expirará después de 24 horas de inactividad
-      maxAge: 24 * 60 * 60 * 1000,
+      secure: false, // Si es true, la cookie solo se enviará sobre HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // Tiempo de vida de la cookie en milisegundos (1 día)
     },
   })
 );
+
+// Middleware para pasar req a todas las vistas
+app.use((req, res, next) => {
+  res.locals.req = req;
+  res.locals.session = req.session;
+  next();
+});
+
+// Habilitar method-override
+app.use(methodOverride("_method"));
 
 // Configuración de multer
 const storage = multer.diskStorage({
