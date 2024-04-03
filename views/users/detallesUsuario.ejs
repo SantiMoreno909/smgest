@@ -7,7 +7,7 @@
     <div class="container">
       <p>Estos son los datos de tu cuenta:</p>
       <form 
-      action="/usuarios/modificarUsuario/<%= usuario.UsuarioID %>?_method=PUT"
+      action="/usuarios/modificarUsuario/<%= usuario.UsuarioID %>"
       method="POST"
       enctype="application/x-www-form-urlencoded">
         <table className="table table-striped">
@@ -54,7 +54,6 @@
         <thead>
           <tr>
             <th scope="col">Teléfono</th>
-            <th scope="col">Fecha de nacimiento</th>
           </tr>
         </thead>
         <tbody>
@@ -63,15 +62,6 @@
             <td class="tdModifUser">
                 <input class="inputModifUser" type="tel" name="telefono" value="<%= usuario.telefono %>"></input>
             </td>
-            <td class="tdModifUser">
-              <% // Formatear la fecha en formato DD/MM/AAAA %>
-              <% const fecha = new Date(usuario.fec_nac); %>
-              <% const dia = fecha.getDate(); %>
-              <% const mes = fecha.getMonth() + 1; %>
-              <% const año = fecha.getFullYear(); %>
-              <% const fechaFormateada = `${dia}/${mes}/${año}`; %>
-              <input class="inputModifUser" type="text" name="fec_nac" value="<%= fechaFormateada %>"></input>
-          </td>
         </tr>
         
         </tbody>

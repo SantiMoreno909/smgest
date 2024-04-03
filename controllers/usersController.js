@@ -101,12 +101,12 @@ const controlador = {
 
   detallesUsuario: async (req, res) => {
     try {
-      const sessionUsername = req.params.username; // Obtener el username de los parámetros de la URL
-      console.log("USERNAME: " + sessionUsername);
+      const userId = req.params.id; // Obtener el username de los parámetros de la URL
+      console.log("USERID: " + userId);
 
       const usuario = await db.Usuarios.findOne({
         where: {
-          username: sessionUsername,
+          UsuarioID: userId,
         },
         raw: true,
         nest: true,
@@ -122,24 +122,61 @@ const controlador = {
     }
   },
 
-  // editarUsuario: async (req, res) => {
-  //   try {
-  //     const UsuarioID = usuario.UsuarioID;
-  //     const usuario = await db.Usuario.findByPk(UsuarioID);
+  // Variable de estado para evitar ejecuciones simultáneas
 
-  //     if (!usuario) {
-  //       res.render("users/detallesUsuario"); // Manejo de caso en que no se encuentra el usuario
-  //       return;
-  //     }
+  modificarUsuario: async (req, res) => {
+    let modificandoUsuario = false;
+    if (modificandoUsuario) {
+      res.status(500).send("La modificación de usuario ya está en curso.");
+      return;
+    }
 
-  //     res.render("users/detallesUsuario", { usuario });
-  //   } catch (error) {
-  //     console.error("Error al intentar obtener el usuario:", error);
-  //     res.render("users/detallesUsuario", {
-  //       error: "Error al obtener el usuario",
-  //     });
-  //   }
-  // },
+    modificandoUsuario = true;
+
+    try {
+      const userId = req.params.id; // Obtener el id del usuario de los parámetros de la URL
+
+      // Capturar los datos del formulario
+      const { nombre, apellido, username, email, telefono, fec_nac } = req.body;
+
+      // Ejecutar el UPDATE dentro de la transacción
+      await db.Usuarios.update(
+        {
+          nombre,
+          apellido,
+          username,
+          email,
+          telefono,
+          fec_nac,
+        },
+        {
+          where: {
+            UsuarioID: userId,
+          },
+        }
+      );
+
+      // Volver a llamar los datos actualizados del usuario
+      const usuario = await db.Usuarios.findOne({
+        where: {
+          UsuarioID: userId,
+        },
+        raw: true,
+        nest: true,
+      });
+
+      // Renderizar la vista con los datos actualizados del usuario
+      res.render("users/detallesUsuario", { usuario });
+    } catch (error) {
+      console.error("Error al modificar usuario:", error);
+      // Manejar el error adecuadamente, por ejemplo, mostrando un mensaje de error en una página de error
+      res
+        .status(500)
+        .send("Error al modificar el usuario. Por favor, inténtalo de nuevo.");
+    } finally {
+      modificandoUsuario = false;
+    }
+  },
 
   destruirUsuario: async (req, res) => {
     const { id } = req.params;

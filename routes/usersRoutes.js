@@ -104,8 +104,8 @@ router.post(
 );
 
 // Ruta para ver detalles del usuario
-router.get("/detallesUsuario/:username", controller.detallesUsuario);
-// router.put("/modificarUsuario/:username", controller.editarUsuario);
+router.get("/detallesUsuario/:id", controller.detallesUsuario);
+router.post("/modificarUsuario/:id", controller.modificarUsuario);
 
 // RUTAS COPIADAS DE LA CASACA
 // Ruta para eliminar usuarios
