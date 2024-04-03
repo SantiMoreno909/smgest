@@ -47,6 +47,10 @@
       <li class="nav-item">
         <a class="nav-link" href="/usuarios/cerrarSesion"> Cerrar Sesión</a>
       </li>
+      <% } else { %> <% } %> <% if (req.session.rol == "admin") { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin"> Panel de admin</a>
+      </li>
       <% } else { %> <% } %>
     </ul>
   </div>
